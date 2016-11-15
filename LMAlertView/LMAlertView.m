@@ -532,6 +532,10 @@
 		[self removeFromSuperview];
 		
 		// Release window from memory
+        if (self.window.rootViewController.presentedViewController) {
+            [self.window.rootViewController.presentedViewController dismissViewControllerAnimated:NO completion:nil];
+        }
+        self.window.rootViewController = nil;
 		self.window.hidden = YES;
 		self.window = nil;
 		
