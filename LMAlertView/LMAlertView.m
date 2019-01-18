@@ -76,16 +76,29 @@
 		self.contentView.autoresizesSubviews = NO;
 		
 		[[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillShow:) name:UIKeyboardWillShowNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
 	}
 	return self;
 }
 
 - (void)keyboardWillShow:(NSNotification *)notification
 {
-	CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameBeginUserInfoKey] CGRectValue].size;
-	
-	self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
-	self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
+    CGSize keyboardSize = [[[notification userInfo] objectForKey:UIKeyboardFrameEndUserInfoKey] CGRectValue].size;
+    
+    self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+    self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, ([[UIScreen mainScreen] bounds].size.height - keyboardSize.height) / 2.0);
+    if (CGRectGetMinY(self.representationView.frame) < 0)
+    {
+        CGRect frame = self.representationView.frame;
+        frame.origin.y = 0;
+        self.representationView.frame = frame;
+    }
+}
+
+- (void)keyboardWillHide:(NSNotification *)notification
+{
+    self.representationView.layer.anchorPoint = CGPointMake(0.5, 0.5);
+    self.representationView.center = CGPointMake([[UIScreen mainScreen] bounds].size.width / 2.0, [[UIScreen mainScreen] bounds].size.height / 2.0);
 }
 
 - (UITableView *)tableViewWithFrame:(CGRect)frame
@@ -518,6 +531,9 @@
 	[[NSNotificationCenter defaultCenter] removeObserver:self
 													name:UIKeyboardWillShowNotification
 												  object:nil];
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:UIKeyboardWillHideNotification
+                                                  object:nil];
 }
 
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
