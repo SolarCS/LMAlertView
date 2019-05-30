@@ -39,8 +39,13 @@
 }
 
 - (void)_addAnimation:(CAAnimation *)anim forKey:(NSString *)key {
-	UIView *view = [self delegate];
-	UIWindow *window = [self windowForView:view];
+    UIView *view = nil;
+    UIWindow *window = nil;
+    
+    if ([[self delegate] isKindOfClass:[UIView class]]) {
+        view = (UIView *)[self delegate];
+        window = [self windowForView:view];
+    }
 	
 	if ([window.rootViewController isKindOfClass:[LMEmbeddedViewController class]]) {
 		CABasicAnimation *basicAnim = (CABasicAnimation *)anim;
