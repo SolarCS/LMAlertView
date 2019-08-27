@@ -539,7 +539,7 @@
 - (void)dismissWithClickedButtonIndex:(NSInteger)buttonIndex animated:(BOOL)animated
 {
 	if ([self.delegate respondsToSelector:@selector(alertView:willDismissWithButtonIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self willDismissWithButtonIndex:buttonIndex];
+		[self.delegate alertView:self willDismissWithButtonIndex:buttonIndex];
 	}
 	
 	// Completion block
@@ -561,7 +561,7 @@
 		[self.otherTableView deselectRowAtIndexPath:self.otherTableView.indexPathForSelectedRow animated:NO];
 		
 		if ([self.delegate respondsToSelector:@selector(alertView:didDismissWithButtonIndex:)]) {
-			[self.delegate alertView:(UIAlertView *)self didDismissWithButtonIndex:buttonIndex];
+			[self.delegate alertView:self didDismissWithButtonIndex:buttonIndex];
 		}
 	};
 	
@@ -745,7 +745,7 @@
 	NSInteger buttonIndex = cell.tag;
 	
 	if ([self.delegate respondsToSelector:@selector(alertView:clickedButtonAtIndex:)]) {
-		[self.delegate alertView:(UIAlertView *)self clickedButtonAtIndex:buttonIndex];
+		[self.delegate alertView:self clickedButtonAtIndex:buttonIndex];
 	}
 	
 	[self dismissWithClickedButtonIndex:buttonIndex animated:YES];

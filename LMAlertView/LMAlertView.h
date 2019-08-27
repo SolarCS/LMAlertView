@@ -28,13 +28,22 @@
 #define kSpringAnimationClassName RBBSpringAnimation
 #endif
 
+@class LMAlertView;
+
+@protocol LMAlertViewDelegate <NSObject>
+- (void)alertView:(LMAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex;
+- (void)willPresentAlertView:(LMAlertView *)alertView;
+- (void)didPresentAlertView:(LMAlertView *)alertView;
+- (void)alertView:(LMAlertView *)alertView didDismissWithButtonIndex:(NSInteger)buttonIndex;
+- (void)alertView:(LMAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex;
+@end
 
 @interface LMAlertView : UIView <UITableViewDataSource, UITableViewDelegate>
 
 @property (nonatomic, strong) UIColor *tintColor;
 @property (nonatomic, strong, readonly) UIView *contentView;
 @property (nonatomic) BOOL keepTopAlignment;
-@property (weak) id<UIAlertViewDelegate> delegate;
+@property (weak) id<LMAlertViewDelegate> delegate;
 
 @property(nonatomic) NSInteger cancelButtonIndex;
 @property(nonatomic, readonly) NSInteger firstOtherButtonIndex;
